@@ -16,8 +16,11 @@ import { HomePage } from './home.page';
         path: '',
         component: HomePage
       }
-    ])
+    ]),
   ],
-  declarations: [HomePage]
+  declarations: [HomePage],
+  exports: [
+    HomePage
+  ]
 })
 export class HomePageModule {}
