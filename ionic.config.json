@@ -1,0 +1,7 @@
+{
+  "name": "my-places",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}
