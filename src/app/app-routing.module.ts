@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import {MapPage} from './map/map.page';
-import {MapPageModule} from './map/map.module';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },

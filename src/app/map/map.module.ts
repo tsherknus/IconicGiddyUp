@@ -6,6 +6,8 @@ import { RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { MapPage } from './map.page';
+import {AgmCoreModule} from '@agm/core';
+import {AgmDirectionModule} from 'agm-direction';
 
 @NgModule({
   imports: [
@@ -17,7 +19,12 @@ import { MapPage } from './map.page';
         path: '',
         component: MapPage
       }
-    ])
+    ]),
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyDFTKbcSXEN22pUx3zfaabEOGyy7oOZtmI',
+      libraries: ["places", "geometry"]
+    }),
+    AgmDirectionModule
   ],
   declarations: [MapPage],
   exports: [
