@@ -5,7 +5,13 @@
 </ion-header>
 <ion-content>
 
+  <input placeholder="search for location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="form-control" #search [formControl]="searchControl">
+
   <agm-map [latitude]="lat" [longitude]="lng">
-    <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+    <agm-marker *ngIf="markersOff" [latitude]="lat" [longitude]="lng"></agm-marker>
+    <agm-direction [origin]="origin" [destination]="destination">
+    </agm-direction>
   </agm-map>
+
+  <div class="map_canvas" [attr.id]="myMapId"></div>
 </ion-content>
