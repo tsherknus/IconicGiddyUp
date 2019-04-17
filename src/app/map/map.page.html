@@ -6,19 +6,18 @@
 <ion-content>
 
 
-  <div fxFlex="100" class="map-full-card-content">
+  <div class="map-full-card-content">
     <input placeholder="search for location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="form-control" #search [formControl]="searchControl">
     <agm-map [latitude]="lat" [longitude]="lng" [zoom]="14">
       <agm-marker *ngIf="markersOff" [latitude]="lat" [longitude]="lng"></agm-marker>
       <agm-direction [origin]="origin" [destination]="destination">
       </agm-direction>
     </agm-map>
-
   </div>
 
-  <ion-list>
+  <ion-list class="padding">
     <ion-item *ngFor="let direction of directions">
-      <ion-label><span>{{direction.html_instructions}} for approximately {{direction.distance.text}}</span></ion-label>
+      <ion-label>{{direction.html_instructions}} for approximately {{direction.distance.text}}</ion-label>
     </ion-item>
   </ion-list>
 </ion-content>
