@@ -5,6 +5,8 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { } from 'googlemaps';
 import {FormControl} from '@angular/forms';
 import { MapsAPILoader } from '@agm/core';
+import {Observable} from 'rxjs';
+import {MapService} from './map.service';
 
 @Component({
   selector: 'app-map',
@@ -32,22 +34,25 @@ export class MapPage implements OnInit {
   lat: number;
   lng: number;
 
+  directions: any;
+  totalDistance: any;
+  rideDuration: any;
+
   constructor(
+      private mapService: MapService,
       private geolocation: Geolocation,
       private mapsAPILoader: MapsAPILoader,
       private ngZone: NgZone) {
   }
 
-
   ngOnInit() {
-
     //create search FormControl
     this.searchControl = new FormControl();
 
     //load Places Autocomplete
     this.mapsAPILoader.load().then(() => {
       this.autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
-        types: ["address"]
+        types: []
       });
       this.autocomplete.addListener("place_changed", () => {
         this.ngZone.run(() => {
@@ -67,7 +72,22 @@ export class MapPage implements OnInit {
           this.getDirection();
         });
       });
+    this.getLocation();
+  });
 
+  let theLoop: (i: number) => void = (i: number) => {
+    setTimeout(() => {
+      this.getLocation();
+      if (--i) {
+        theLoop(i);
+      }
+    }, 10000);
+  };
+
+    theLoop(900);
+  }
+
+  getLocation(){
     this.geolocation.getCurrentPosition().then((resp) => {
       this.lat = resp.coords.latitude;
       console.log(resp.coords.latitude);
@@ -76,7 +96,18 @@ export class MapPage implements OnInit {
     }).catch((error) => {
       console.log('Error getting location', error);
     });
-  })
+  }
+
+  // "https://maps.googleapis.com/maps/api/directions/json?origin=" + this.lat + "," + this.lng + "&destination=" + this.latitude + "," + this.latitude + "key=AIzaSyBHmC7WbuSh95dO3BzYMuA5ULvea1AgQB8"
+
+  distance(lat1, lon1, lat2, lon2) {
+    let p = 0.017453292519943295;    // Math.PI / 180
+    let c = Math.cos;
+    let a = 0.5 - c((lat2 - lat1) * p)/2 +
+        c(lat1 * p) * c(lat2 * p) *
+        (1 - c((lon2 - lon1) * p))/2;
+
+    return 7917 * Math.asin(Math.sqrt(a)); // 2 * R; R = 3958.7 km
   }
 
   getDirection() {
@@ -84,7 +115,14 @@ export class MapPage implements OnInit {
     this.origin = { lat: this.lat, lng: this.lng };
     this.destination = { lat: this.latitude, lng: this.longitude };
 
-    // this.origin = 'Taipei Main Station';
-    // this.destination = 'Taiwan Presidential Office';
+    console.log(this.distance(this.origin.lat, this.origin.lng, this.destination.lat, this.destination.lng));
+
+    this.mapService.getDirections(this.lat, this.lng, this.latitude, this.longitude).subscribe(
+        directions => { this.directions = directions;
+          this.totalDistance = directions.routes[0].legs[0].distance;
+          this.rideDuration = directions.routes[0].legs[0].duration;
+          this.directions = directions.routes[0].legs[0].steps
+        }
+    );
   }
 }

@@ -13,6 +13,8 @@ import { AgmCoreModule, GoogleMapsAPIWrapper, MapsAPILoader} from "@agm/core";
 import { AgmDirectionModule } from 'agm-direction';
 import {NativeGeocoder} from '@ionic-native/native-geocoder/ngx';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {MapService} from './map/map.service';
+import {HttpClient, HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -31,13 +33,16 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
         apiKey: 'AIzaSyDFTKbcSXEN22pUx3zfaabEOGyy7oOZtmI',
         libraries: ["places", "geometry"]
       }),
-      AgmDirectionModule
+      AgmDirectionModule,
+      HttpClientModule
   ],
   providers: [
     StatusBar,
     Geolocation,
     NativeGeocoder,
     SplashScreen,
+    HttpClient,
+    MapService,
     GoogleMapsAPIWrapper,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
