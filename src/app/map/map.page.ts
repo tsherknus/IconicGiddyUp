@@ -81,14 +81,19 @@ export class MapPage implements OnInit {
       if (--i) {
         theLoop(i);
       }
-    }, 10000);
+    }, 1000);
   };
 
-    theLoop(900);
+    theLoop(9000);
   }
 
   getLocation(){
-    this.geolocation.getCurrentPosition().then((resp) => {
+    let options = {
+      timeout:10000,
+      enableHighAccuracy:true
+    };
+
+    this.geolocation.getCurrentPosition(options).then((resp) => {
       this.lat = resp.coords.latitude;
       console.log(resp.coords.latitude);
       this.lng = resp.coords.longitude;
