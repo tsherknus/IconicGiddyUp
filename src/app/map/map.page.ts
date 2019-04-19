@@ -6,7 +6,7 @@ import { } from 'googlemaps';
 import {FormControl} from '@angular/forms';
 import { MapsAPILoader } from '@agm/core';
 import {Observable} from 'rxjs';
-import {MapService} from './map.service';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-map',
@@ -39,10 +39,10 @@ export class MapPage implements OnInit {
   rideDuration: any;
 
   constructor(
-      private mapService: MapService,
       private geolocation: Geolocation,
       private mapsAPILoader: MapsAPILoader,
-      private ngZone: NgZone) {
+      private ngZone: NgZone,
+      private http: HttpClient) {
   }
 
   ngOnInit() {
@@ -98,9 +98,14 @@ export class MapPage implements OnInit {
       console.log(resp.coords.latitude);
       this.lng = resp.coords.longitude;
       console.log(resp.coords.longitude);
+      this.zoom = 16;
     }).catch((error) => {
       console.log('Error getting location', error);
     });
+  }
+
+  getDirections(oLat: any, oLng: any, dLat: any, dLng: any):Observable<any> {
+    return this.http.get("https://maps.googleapis.com/maps/api/directions/json?origin=" + oLat + "," + oLng + "&destination=" + dLat + "," + dLng + "&key=AIzaSyBpb9FeAHl54o7wl9N6emBbgbdUaPX_yzk");
   }
 
   // "https://maps.googleapis.com/maps/api/directions/json?origin=" + this.lat + "," + this.lng + "&destination=" + this.latitude + "," + this.latitude + "key=AIzaSyBHmC7WbuSh95dO3BzYMuA5ULvea1AgQB8"
@@ -122,7 +127,7 @@ export class MapPage implements OnInit {
 
     console.log(this.distance(this.origin.lat, this.origin.lng, this.destination.lat, this.destination.lng));
 
-    this.mapService.getDirections(this.lat, this.lng, this.latitude, this.longitude).subscribe(
+    this.getDirections(this.lat, this.lng, this.latitude, this.longitude).subscribe(
         directions => { this.directions = directions;
           this.totalDistance = directions.routes[0].legs[0].distance;
           this.rideDuration = directions.routes[0].legs[0].duration;

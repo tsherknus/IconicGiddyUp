@@ -11,9 +11,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { AgmCoreModule, GoogleMapsAPIWrapper, MapsAPILoader} from "@agm/core";
 import { AgmDirectionModule } from 'agm-direction';
+import { FlexLayoutModule } from "@angular/flex-layout";
 import {NativeGeocoder} from '@ionic-native/native-geocoder/ngx';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MapService} from './map/map.service';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 
 @NgModule({
@@ -34,7 +34,8 @@ import {HttpClient, HttpClientModule} from '@angular/common/http';
         libraries: ["places", "geometry"]
       }),
       AgmDirectionModule,
-      HttpClientModule
+      HttpClientModule,
+      FlexLayoutModule
   ],
   providers: [
     StatusBar,
@@ -42,7 +43,6 @@ import {HttpClient, HttpClientModule} from '@angular/common/http';
     NativeGeocoder,
     SplashScreen,
     HttpClient,
-    MapService,
     GoogleMapsAPIWrapper,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
