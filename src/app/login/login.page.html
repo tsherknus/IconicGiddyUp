@@ -5,6 +5,9 @@
 </ion-header>
 <ion-content>
   <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1em" class="padding-top">
+    <div fxLayout="row" *ngIf="error != undefined">
+      <p class="error">Incorrect email or password.</p>
+    </div>
     <div fxLayout="row">
       <ion-item>
         <ion-label position="stacked">Email</ion-label>
@@ -18,8 +21,8 @@
       </ion-item>
     </div>
     <div fxLayout="row" fxLayoutGap="1em" class="padding-top-button">
-      <ion-button [routerLink]="['/map']" (click)="login(email, password)">Driver Login</ion-button>
-      <ion-button [routerLink]="['/map']" (click)="login(email, password)">Passenger Login</ion-button>
+      <ion-button (click)="driverLogin(email, password)">Driver Login</ion-button>
+      <ion-button [routerLink]="['/passenger-maps']" (click)="passengerLogin(email, password)">Passenger Login</ion-button>
     </div>
   </div>
 </ion-content>

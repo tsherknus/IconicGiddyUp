@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
+import {Router, RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -8,24 +9,30 @@ import {HttpClient} from '@angular/common/http';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-  driver: any;
   email: any;
-  password: any;
+  error: boolean;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+              private router: Router) { }
 
   ngOnInit() {
-    // this.getDrivers().subscribe(name => {
-    //   console.log(name.drivers);
-    //   this.driver = name.drivers;
-    // })
+
   }
 
-  login(email: any, password: any) {
-    console.log(email, password);
+  driverLogin(email: any, password: any) {
+    this.driverLoginRequest(email).subscribe(data => {
+      console.log(data.data[0].password);
+      if(password == data.data[0].password) {
+        this.router.navigateByUrl('/map');
+      } else {
+        this.error = true;
+      }
+    })
   }
 
-  // getDrivers():Observable<any> {
-  //   return this.http.get("http://127.0.0.1:5000/employees");
-  // }
+
+
+  driverLoginRequest(email:any):Observable<any> {
+    return this.http.get("http://127.0.0.1:5000/login/driver/"+email);
+  }
 }
